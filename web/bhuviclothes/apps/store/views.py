@@ -3,7 +3,18 @@ from apps.store.models import Product
 from apps.category.models import Category
 
 # Create your views here.
-def Store(request, category_slug=None):
+
+def Store(request):
+    products = Product.objects.all().filter(is_available=True)
+    product_count = products.count()
+    context = {
+        'products':products,
+        'product_count':product_count
+    }
+    return render(request, 'store.html', context)
+
+
+def FilterByCategory(request, category_slug=None):
     categories = None
     products = None
 
@@ -19,5 +30,16 @@ def Store(request, category_slug=None):
         'products':products,
         'product_count':product_count
     }
-    print(products)
+
     return render(request, 'store.html', context)
+
+
+def ProductDetail(request, category_slug, product_slug):
+    try:
+        single_product = Product.objects.get(category__slug=category_slug, slug=product_slug)
+    except Exception as e:
+        raise e
+    context = {
+        'single_product': single_product
+    }
+    return render(request, 'product-detail.html', context)
