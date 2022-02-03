@@ -1,0 +1,151 @@
+{% extends 'snippets/base.html' %}
+{% load static %}
+{% block home %}
+<section class="section-content padding-y bg">
+	<div class="container">
+
+		<!-- ============================ COMPONENT 1 ================================= -->
+		<div class="row">
+
+            <aside class="col-lg-7">
+                <div class="card">
+					<div class="card-body">
+                        <form action="">
+                            <h4><b>Billing Address</b></h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="small font-weight-bold" for="firstName">First Name</label>
+                                        <input type="text" id="firstName" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="small font-weight-bold" for="lastName">Last Name</label>
+                                        <input type="text" id="lastName" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="small font-weight-bold" for="Email">Email</label>
+                                        <input type="text" id="Email" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="small font-weight-bold" for="PhoneNumber">Phone Number</label>
+                                        <input type="text" id="PhoneNumber" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="small font-weight-bold" for="AddressLine1">Address Line 1</label>
+                                        <input type="text" id="AddressLine1" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="small font-weight-bold" for="AddressLine2">Address Line 2</label>
+                                        <input type="text" id="AddressLine2" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="small font-weight-bold" for="City">City</label>
+                                        <input type="text" id="City" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="small font-weight-bold" for="State">State</label>
+                                        <input type="text" id="State" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="small font-weight-bold" for="Country">Country</label>
+                                        <input type="text" id="Country" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="OtherNote">Other Note</label>
+                                        <textarea type="text" id="OtherNote" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </aside>
+			<aside class="col-lg-5">
+
+				<div class="card">
+					<div class="card-body">
+		
+                            <table class="table table-borderless table-shopping-cart">
+                                <thead class="text-muted">
+                                    <tr class="small text-uppercase">
+                                        <th scope="col">Product</th>
+                                        <th scope="col" width="120">Quantity</th>
+                                        <th scope="col" width="120">Price</th>
+                                        <th scope="col" class="text-right" width="200"> </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for i in cart_items %}
+                                        <tr>
+                                            <td>
+                                                <figure class="itemside align-items-center">
+                                                    <div class="aside"><img src="{{i.product.images.url}}" class="img-sm"></div>
+                                                    <figcaption class="info">
+                                                        <a href="{{i.product.get_url}}" class="title text-dark">{{i.product.product_name}}</a>
+                                                        <p class="text-muted small">Matrix: 25 Mpx <br> Brand: Canon</p>
+                                                    </figcaption>
+                                                </figure>
+                                            </td>
+                                            <td> 
+                                                <!-- col.// -->
+                                                <div class="col"> 
+                                                    <div class="input-group input-spinner">
+                                                        <div class="input-group-prepend">
+                                                            <a href="{% url 'remove_cart' i.product.id %}" class="btn btn-light" type="button" id="button-plus"> <i class="fa fa-minus"></i> </a>
+                                                        </div>
+                                                        <input type="text" class="form-control"  value="{{i.quantity}}">
+                                                        <div class="input-group-append">
+                                                            <a href="{% url 'add_cart' i.product.id %}" class="btn btn-light" type="button" id="button-minus"> <i class="fa fa-plus"></i> </a>
+                                                        </div>
+                                                    </div> <!-- input-group.// -->
+                                                </div> <!-- col.// -->
+                                            </td>
+                                            <td> 
+                                                <div class="price-wrap"> 
+                                                    <var class="price">Rs {{i.sub_total}} </var> 
+                                                    <small class="text-muted"> Rs {{i.product.price}} each </small> 
+                                                </div> <!-- price-wrap .// -->
+                                            </td>
+                                            <td class="text-right"> 
+                                            <a href="{% url 'remove_cart_item' i.product.id %}" class="btn btn-danger"> Remove</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+             
+						<a href="./place-order.html" class="btn btn-primary btn-block"> Place Order </a>
+						<a href="./store.html" class="btn btn-light btn-block">Continue Shopping</a>
+					</div> <!-- card-body.// -->
+				</div> <!-- card.// -->
+
+			</aside> <!-- col.// -->
+
+
+
+		</div> <!-- row.// -->
+		<!-- ============================ COMPONENT 1 END .// ================================= -->
+
+	</div> <!-- container .//  -->
+</section>
+{% endblock %}

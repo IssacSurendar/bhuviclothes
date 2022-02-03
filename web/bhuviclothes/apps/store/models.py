@@ -2,6 +2,13 @@ from django.db import models
 from apps.category.models import Category
 from django.urls import reverse
 
+
+variation_category_choice = (
+    ('color', 'color'),
+    ('size', 'size')
+)
+
+
 # Create your models here.
 class Product(models.Model):
     product_name = models.CharField(max_length=200, unique=True)
@@ -20,3 +27,27 @@ class Product(models.Model):
 
     def __str__(self):
         return self.product_name
+
+
+class VariationManager(models.Manager):
+
+    def colors(self):
+        return super(VariationManager, self).filter(variation_category='color', is_active=True)
+
+    def sizes(self):
+        return super(VariationManager, self).filter(variation_category='size', is_active=True)
+
+
+class Variation(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    variation_category = models.CharField(max_length=50, choices=variation_category_choice)
+    variation_value = models.CharField(max_length=50, blank=True)
+    is_active = models.BooleanField(default=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    objects = VariationManager()
+
+    def __unicode__(self):
+        return self.product
+
+
